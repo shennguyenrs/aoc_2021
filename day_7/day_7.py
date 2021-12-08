@@ -1,6 +1,7 @@
 raw = [i for i in open("input.txt", "r").readlines()][0].rstrip().split(',')
 
 crab_dict = dict()
+sorted_raw = sorted(map(int, raw))
 
 for i in raw:
     if int(i) in crab_dict.keys():
@@ -10,7 +11,7 @@ for i in raw:
 
 
 # Find the fuel cost
-def Calcuate_fuel_cost(mean_key, map_dict):
+def Part_one_cost(mean_key, map_dict):
     cost = 0
 
     for key in map_dict.keys():
@@ -20,11 +21,23 @@ def Calcuate_fuel_cost(mean_key, map_dict):
     return cost
 
 
-min_cost = Calcuate_fuel_cost(min(crab_dict.keys()), crab_dict)
+def Part_two_cost(mean_key, map_dict):
+    cost = 0
+    for key in map_dict.keys():
+        fuel = abs(mean_key - key) * (abs(mean_key - key) + 1) / 2
+        cost += fuel * map_dict[key]
 
-for key in crab_dict.keys():
-    fuel_cost = Calcuate_fuel_cost(key, crab_dict)
-    if fuel_cost < min_cost:
-        min_cost = fuel_cost
+    return cost
 
-print(min_cost)
+
+def Find_median(sorted_list):
+    median_pos = len(sorted_list) // 2
+    return sorted_list[median_pos]
+
+
+def Find_averange(a_list):
+    return sum(a_list) // len(a_list)
+
+
+print(Part_one_cost(Find_median(sorted_raw), crab_dict))
+print(Part_two_cost(Find_averange(sorted_raw), crab_dict))
